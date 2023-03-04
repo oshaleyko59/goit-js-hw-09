@@ -15,7 +15,7 @@ btnStopEl.disabled = true;
 
 btnStartEl.addEventListener("click", handleBtnStartClick);
 btnStopEl.addEventListener('click', handleBtnStopClick);
-let intervalId;
+let intervalId = null;
 
 function handleBtnStartClick({ target }) {
   /* кнопка «Start» неактивна */
