@@ -1,0 +1,33 @@
+/* styles for 02-timer task */
+input {
+  font-size: 1em;
+}
+
+.timer {
+  display: flex;
+  gap: 1em;
+  align-items: center;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* outline: green solid 1px; */
+}
+
+.label {
+  text-transform: uppercase;
+  font-size: 0.6em;
+  line-height: 1.1;
+  width: 5em;
+  text-align: center;
+}
+
+.value {
+  font-size: 2em;
+}
+
+.last-minute {
+  color: coral;
+}

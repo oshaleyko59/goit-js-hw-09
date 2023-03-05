@@ -3,9 +3,9 @@
 сторінках реєстрації подій, під час технічного обслуговування тощо.
  Подивися демо-відео роботи таймера. */
 import flatpickr from 'flatpickr';
-// Додатковий імпорт стилів
 import "flatpickr/dist/flatpickr.min.css";
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
+import '../css/timer.css';
 
 // Number of milliseconds per unit of time
 const MS = {
