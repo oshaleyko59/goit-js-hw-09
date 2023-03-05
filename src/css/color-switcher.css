@@ -1,0 +1,13 @@
+button.centered {
+  margin-top: 200px;
+  margin-left: calc(50% - 150px);
+}
+
+button {
+  font-size: inherit;
+  width: 100px;
+  height: 2em;
+  border-radius: 0.6em;
+  cursor: pointer;
+}
+
