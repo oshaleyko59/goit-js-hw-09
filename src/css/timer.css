@@ -3,8 +3,10 @@
 .timer {
   margin-top: 1em;
   display: flex;
+  width: 16em;
   gap: 1.3em;
   align-items: center;
+  outline: solid 1px green;
 }
 
 .field {

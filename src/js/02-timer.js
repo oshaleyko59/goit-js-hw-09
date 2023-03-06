@@ -14,20 +14,29 @@ const HLP = {
   MINUTE: 60 * 1000,
   HOUR: 60 * 60 * 1000,
   DAY,
-  // MIN_FUTURE_MS: 30 * MS.SECOND,
+  ALLOW_TODAY: true,
   MIN_FUTURE_DAYS: 1, //0,
   FINAL_COUNT_MS: DAY, //=last day
   BEEP: false, //beep during last count //true, //
   VALUE_ZERO: '--',
+  msgShown: false,
 
   doDays(ticks) {
     return Math.floor(ticks / this.DAY);
   },
 
   isDateValid(selected) {
-    const nowDays = this.doDays(Date.now());
-    const selectedDays = this.doDays(selected);
-    return selectedDays - nowDays >= this.MIN_FUTURE_DAYS;
+    const nowMs = Date.now();
+    if (selected <= nowMs) { //selected time in the past
+      return false;
+    }
+    //today time is allowed
+    if (HLP.ALLOW_TODAY) {
+      return true;
+    }
+    //check if date is in the future
+    const timerDays = this.doDays(selected)- this.doDays(nowMs) ;
+    return timerDays >= this.MIN_FUTURE_DAYS;
   },
 
   reportFailure() {
@@ -37,14 +46,36 @@ const HLP = {
   warnFinalCount() {
     Notify.warning('It\'s final count!', {
       closeButton: true,
-      showOnlyTheLastOne: true,
     });
+    this.msgShown = true;
   },
 
   infoTimerStopped() {
-    Notify.info('The time has ended...', { closeButton: true });
+    Notify.info('The time has ended...', {
+      closeButton: true,
+    });
+    this.msgShown = true;
   },
+
+  removeMsgs() {
+    if (!this.msgShown) {
+      return;
+    }
+
+    this.msgShown = false;
+    Notify.info('', {
+      showOnlyTheLastOne: true,
+      timeout: 0,
+      width: 0,
+    });
+    Notify.warning('', {
+      showOnlyTheLastOne: true,
+      timeout: 0,
+      width: 0,
+    });
+  }
 };
+
 
 const btnStartEl = document.querySelector('button[data-start]');
 btnStartEl.disabled = true;
@@ -68,7 +99,6 @@ const options = {
 
     targetMs = selectedDates[0].valueOf();
     if (!HLP.isDateValid(targetMs)) {
-     // console.log('on close - not valid');
       HLP.reportFailure();
       return;
     }
@@ -130,6 +160,12 @@ function completeCounting() {
   }
 
   HLP.infoTimerStopped();
+  window.addEventListener('mousemove', handleMouseMove);
+}
+
+function handleMouseMove() {
+  window.removeEventListener('mousemove', handleMouseMove);
+  HLP.removeMsgs();
 }
 
 function countFinal() {
@@ -193,4 +229,4 @@ const snd = new Audio(
 );
 function beep() {
   snd.play();
-}
+} 
